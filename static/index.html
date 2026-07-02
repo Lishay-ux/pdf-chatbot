@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF ChatBot — AI Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">PDF<strong>Bot</strong></span>
+      </div>
+      <button class="new-chat-btn" onclick="newChat()">+ New Chat</button>
+    </div>
+
+    <!-- PDF Upload Zone -->
+    <div class="upload-section">
+      <label class="upload-label">Upload PDF</label>
+      <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" 
+           ondragover="event.preventDefault(); this.classList.add('drag-over')"
+           ondragleave="this.classList.remove('drag-over')"
+           ondrop="handleDrop(event)">
+        <div class="upload-icon">📄</div>
+        <p class="upload-hint">Click or drag PDF here</p>
+      </div>
+      <input type="file" id="fileInput" accept=".pdf" hidden onchange="uploadPDF(this.files[0])"/>
+      <div id="pdfStatus" class="pdf-status hidden"></div>
+      <button class="clear-btn hidden" id="clearBtn" onclick="clearPDF()">✕ Remove PDF</button>
+    </div>
+
+    <!-- Chat History List -->
+    <div class="history-section">
+      <label class="upload-label">History</label>
+      <div id="historyList" class="history-list">
+        <p class="history-empty">No chats yet</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CHAT AREA -->
+  <main class="chat-main">
+    <!-- Header -->
+    <header class="chat-header">
+      <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+      <span class="header-title" id="headerTitle">Ask anything from your PDF</span>
+      <div class="model-badge">Claude Sonnet</div>
+    </header>
+
+    <!-- Messages -->
+    <div class="messages-area" id="messagesArea">
+      <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-icon">🤖</div>
+        <h2>PDF ChatBot</h2>
+        <p>Upload a PDF on the left, then ask me anything about it!</p>
+        <div class="example-questions">
+          <button class="example-chip" onclick="sendExample(this)">Summarize this document</button>
+          <button class="example-chip" onclick="sendExample(this)">What are the key points?</button>
+          <button class="example-chip" onclick="sendExample(this)">Explain the main topic</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input Bar -->
+    <div class="input-bar">
+      <div class="input-wrapper">
+        <textarea 
+          id="userInput" 
+          placeholder="Ask a question about your PDF..." 
+          rows="1"
+          onkeydown="handleKey(event)"
+          oninput="autoResize(this)">
+        </textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+      <p class="input-hint">Press Enter to send · Shift+Enter for new line</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
